@@ -1,4 +1,4 @@
-# Documentação de como integrar um Simple com dados vindos de um simualador externo
+# Documentação de como integrar um Simple com dados vindos de um simulador externo
 
 Temos três entidades em questão:
 
