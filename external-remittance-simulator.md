@@ -2,7 +2,7 @@
 ​
 ## Sobre essa documentação
 ​
-O objetivo desta documentação é tornar a integração entre os correspondentes e a plataforma SIMPLE o mais acessível e transparente possível, sanando quaisquer dúvidas **de envio de remessa**(EDIT) que a equipe técnica venha a ter à nível de código.
+O objetivo desta documentação é tornar a integração entre os correspondentes e a plataforma SIMPLE o mais acessível e transparente possível, sanando quaisquer dúvidas **de envio de remessa** que a equipe técnica venha a ter à nível de código.
 ​
 ## O que é o SIMPLE
 ​
