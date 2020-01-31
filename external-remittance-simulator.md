@@ -1,23 +1,13 @@
-# Introdução
+# Tipos de remessas no Simple
+
+## Realizando 'Envio de Remessa' pelo Simple
 ​
-## Sobre essa documentação
+O envio de Remessa trata-se do envio de moeda nacional para estrangeira em conta no exterior.
+Atualmente, o Simple realiza o envio de remessa com duas naturezas de operação: para a conta do próprio cliente no exterior ou para um beneficiário.
 ​
-O objetivo desta documentação é tornar a integração entre os correspondentes e a plataforma SIMPLE o mais acessível e transparente possível, sanando quaisquer dúvidas **de envio de remessa** que a equipe técnica venha a ter à nível de código.
-​
-## O que é o SIMPLE
-​
-SIMPLE é uma plataforma _white label_ que proporciona soluções completas de câmbio para os correspondentes. As principais funcionalidades da SIMPLE são:
-​
-- Compra de papel moeda com delivery
-- Remessas internacionais usando blockchain
-​
-### Realizando 'Envio de Remessa' pelo Simple
-​
-Atualmente, o Simple realiza o envio de remessa, podendo ser com duas naturezas de operação : para o próprio cliente e para o beneficiário.
-O envio de Remessa tratasse do envio de moeda nacional para estrangeira em conta no exterior.
-​
-### Realizando 'Recebimento de Remessa' pelo Simple
-O recebimento de remessas trata-se da entrega de moeda nacional, vinda de moeda estrangeira em conta no exterior.
+## Realizando 'Recebimento de Remessa' pelo Simple
+
+O recebimento de remessas trata-se do recebimento de moeda nacional, vinda de moeda estrangeira em conta no exterior.
 ​
 # Integrando um simulador externo com a funcionalidade de "Envio de remessas" do SIMPLE
 ​
@@ -84,60 +74,117 @@ Para conversões de moeda estrangeira para BRL (real):
 ​
 Um exemplo de payload de resposta seria:
 ​
-```
+```js
 {
-  id	98e69bc5e28f0a29f24e33970e511daca6e75031
-  createdAt	2020-01-24T18:38:52.647Z
-  expiresAt	2020-01-24T18:48:52.000Z
-  purposeCode	IR001
-  maxExpireTime	600
+  id: "98e69bc5e28f0a29f24e33970e511daca6e75031",
+  createdAt: "2020-01-24T18:38:52.647Z",
+  expiresAt: "2020-01-24T18:48:52.000Z",
+  purposeCode: "IR001",
+  maxExpireTime: 600,
   currency: {
-    currencyCode	USD
-    currencyName	Dólar Americano
-    countryFlagUrl	https://s3.amazonaws.com/frente-exchanges/flags/united-states.svg
-    totalSpreadValue	2.5
-    minValue	50
-  }
-  currencyCode	USD
-  currencyName	Dólar Americano
-  countryFlagUrl	https://s3.amazonaws.com/frente-exchanges/flags/united-states.svg
-  totalSpreadValue	2.5
-  minValue	50
-  offer	{
-    value	3439894
-    divisor	10000
-  }
-  tax	{
-    iof {
-      percentage	1.1
-      total	{
-        value	163049
-        divisor	10000
-      }
-    }
-  }
-  price	{
-    withTax	{
-      value	43606
-      divisor	10000
-    }
-    withoutTax {
-      value	43132
-      divisor	10000
-    }
-  }
-  total	{
-    withTax	{
-      value	15000000
-      divisor	10000
-    }
-    withoutTax {
-      value	14836951
-      divisor	10000
-    }
+    currencyCode: "USD",
+    currencyName: "Dólar Americano",
+    countryFlagUrl: "https://s3.amazonaws.com/frente-exchanges/flags/united-states.svg",
+    totalSpreadValue: 2.5,
+    minValue: 50,
+  },
+  offer: {
+    value: 3439894,
+    divisor: 10000,
+  },
+  tax: {
+    iof: {
+      percentage: 1.1,
+      total: {
+        value: 163049,
+        divisor: 10000,
+      },
+    },
+  },
+  price: {
+    withTax: {
+      value: 43606,
+      divisor: 10000,
+    },
+    withoutTax: {
+      value: 43132,
+      divisor: 10000,
+    },
+  },
+  total: {
+    withTax: {
+      value: 15000000,
+      divisor: 10000,
+    },
+    withoutTax: {
+      value: 14836951,
+      divisor: 10000,
+    },
+  },
+}
+```
+
+#### Sobre a relação entre value e divisor
+
+Note que no payload de exemplo acima, alguns campos possuem uma propriedade `value` e `divisor`. O `divisor` é responsável por formatar o valor de `value` para a exibição no front-end da aplicação.
+
+Então por exemplo, se quisermos exibir o valor total de uma transação:
+
+```js
+total: {
+  withTax: {
+    value: 14836951,
+    divisor: 10000,
   }
 }
 ```
+
+Faríamos o seguinte cálculo:
+
+```
+const formattedTotal = `R$ (total.withTax.value / total.withTax.divisor)`
+
+// R$ 1483.6951
+```
+
+### Explicando o payload de EXCHANGES
+
+- id: ID da remessa
+
+- createdAt: data de criação da remessa
+
+- expiresAt: data de expiração da remessa
+
+- purposeCode: natureza da operação
+  - IR001: remessa para o próprio cliente
+  - IR002: remessa para um beneficiário terceiro
+
+- maxExpireTime: tempo máximo de expiração da remessa
+
+- currency: `Object` contendo informações sobre a moeda
+  - currencyCode: sigla da moeda escolhida pelo usuário
+  - currencyName: nome da moeda
+  - countryFlagUrl: url para buscar a bandeira da moeda escolhida, no formato svg
+  - totalSpreadValue: valor em % do spread total incluso no valor da moeda. Spread total contempla spread base + spread do correspondente
+  - minValue: valor mínimo a ser transacionado.
+
+- offer: `Object` contendo o valor total em moeda estrangeira que o usuário deseja transacionar.
+  - value: valor total em moeda estrangeira, não formatado
+  - divisor: divisor usado para formatar o `value`
+
+- tax: `Object` contendo informações sobre os impostos inclusos na moeda
+  - iof.percentage: % do IOF sobre o valor total da transação
+  - iof.total.value: valor total do IOF sobre o valor final da transação
+  - iof.total.divisor: divisor usado para formatar o `value`
+
+- price: `Object` contendo informações sobre o valor da moeda no momento da simulação
+  - withTax: é o VET, ou seja, valor base da cotação da moeda, acrescido de spread e impostos
+  - withoutTax: valor base da cotação acrescido do spread, **sem** os impostos (IOF)
+
+- total: `Object` contendo o valor total da transação em moeda nacional
+  - withtax: valor total da transação em moeda nacional, acrescido de spread e impostos
+  - withoutTax: valor total da transação em moeda nacional, acrescido de spread, **sem** os impostos (IOF)
+
 ​
 ### Quando chamar esse endpoint de *EXCHANGES*?
 ​

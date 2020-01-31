@@ -1,3 +1,22 @@
+# Introdução
+
+SIMPLE é uma plataforma _white label_ que proporciona soluções completas de câmbio para os correspondentes. As principais funcionalidades da SIMPLE são:
+​
+- Compra de papel moeda com delivery
+- Remessas internacionais usando blockchain
+
+## Sobre essa documentação
+​
+O objetivo desta documentação é tornar a integração entre os correspondentes e a plataforma SIMPLE o mais acessível e transparente possível, sanando quaisquer dúvidas que a equipe técnica venha a ter à nível de código.
+
+# Acessando as documentações
+
+Para acessar a documentação de integração de um simulador externo com a funcionalidade de **Envio de remessas** do SIMPLE, clique [aqui](https://github.com/Frente-Corretora/public-docs/blob/master/external-remittance-simulator.md) ou acesse esse link:
+
+https://github.com/Frente-Corretora/public-docs/blob/master/external-remittance-simulator.md
+
+A seguir você tem acesso à documentação para integrar um simulador externo com o Simple, na funcionalidade de **Compra de papel moeda**.
+
 # Documentação de como integrar um Simple com dados vindos de um simulador externo
 
 Temos três entidades em questão:
