@@ -1,8 +1,7 @@
 # Introdução - V2
 
-<aside class="warning">
-  Se você está procurando a documentação antiga da integração do simulador [clique aqui](https://github.com/Frente-Corretora/public-docs/blob/d0c941d1923bd23723f0df932756cacb106a241b/external-price-simulator.md). Essa documentação foi atualizada.
-</aside>
+
+> Se você está procurando a documentação antiga da integração do simulador [clique aqui](https://github.com/Frente-Corretora/public-docs/blob/d0c941d1923bd23723f0df932756cacb106a241b/external-price-simulator.md). Essa documentação foi atualizada.
 
 SIMPLE é uma plataforma _white label_ que proporciona soluções completas de câmbio para os correspondentes. As principais funcionalidades da SIMPLE são:
 ​
@@ -82,9 +81,7 @@ Com as respostas `price`[`withoutTax`] e `price`[`withTax`] você consegue extra
 
 Com as respostas `total`[`withTax`] você consegue extrair o que devolver para o seu usuário.
 
-<aside class="warning">
-  Lembre-se: Sua cotacão irá expirar em 10 minutos! O mercado de câmbio oscila! Os valores podem ser ligeiramente alterados.
-</aside>
+>  Lembre-se: Sua cotacão irá expirar em 10 minutos! O mercado de câmbio oscila! Os valores podem ser ligeiramente alterados.
 
 ## Integração
 
