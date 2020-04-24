@@ -212,8 +212,6 @@ const formattedTotal = `R$ (total.withTax.value / total.withTax.divisor)`
 
 - **correspondentId**: ID do correspondente que foi passado como parâmetro
 
-- **reverse**: Indica como foi calculada a cotação, se foi de moeda nacional para enstrangeira e vice-versa
-
 - **purposeCode**: natureza da operação
   - **IR001**: remessa para o próprio cliente
   - **IR002**: remessa para um beneficiário terceiro
