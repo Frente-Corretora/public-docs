@@ -23,29 +23,56 @@ Primeiro, é necessário ter em mãos o seu **correspondent_identifier** e **cor
 ​
 ## Acessando informações sobre moedas, taxas, cotações e valores
 ​
-**Não é necessário fazer nenhum cálculo no frontend**, já que o endpoint de _EXCHANGES_ é o responsável por trazer todas as informações relacionadas à moedas, taxas, cotações, valores em real e valores em moeda estrangeira.
+**Não é necessário fazer nenhum cálculo no frontend**, já que o endpoint de _EXCHANGES_ é o responsável por trazer todas as informações relacionadas à moedas, taxas, cotações, valores em real e valores em moeda estrangeira. O conjunto dessas informações retornadas pela API pode ser chamado de **cotação de uma remessa**.
 ​
-O endpoint base é:
-​
-`https://api.frentecorretora.com.br/v1/exchanges/remittance`
-​
-A API da SIMPLE suporta 2 tipos de cálculos para remessas:
+
+Como mencionado as remessas se difereciam entre **envio** e **recebimento**, no contexto de rota da API serão lidadas respectivamente como `/outbound` e `/inbound`.
+
+O prefixo base para simular qualquer cotação de uma remessa é o seguinte: 
+```
+https://api.frentecorretora.com.br/v1/exchanges/remittance
+```
+
+Logo após o prefixo é informado o tipo da remessa(outbound ou inbound):
+```
+https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound
+ou
+https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound
+```
+
+Após informar o tipo da remessa, será necessário informar a forma com a qual será calculada a cotação. A API da SIMPLE suporta 2 tipos de cálculos para remessas:
 ​
 - de real (BRL) para moeda estrangeira
 - de moeda estrangeira para real (BRL)
+
+**IMPORTANTE**
+- **Outbound**, suporta Euro (EUR) e Dólar Americano (USD) como moeda estrangeira.
+- **Inbound**, suporta Euro (EUR), Dólar Americano (USD) e Libra Esterlina (GBP) como moeda estrangeira.
 ​
-Quando o cálculo é feito de real para moeda estrangeira, usamos a rota `/reverse`.
+
+Quando o cálculo é feito de real para moeda estrangeira, adicionamos o sufixo `/reverse`.
 ​
- BRL -> USD/EUR
-> `https://api.frentecorretora.com.br/v1/exchanges/remittance/reverse`
+```
+// Para outbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound/reverse
+
+// Para inbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound/reverse
+```
 ​
-Quando o cálculo é feito de moeda estrangeira para real, a rota é `/`.
+Quando o cálculo é feito de moeda estrangeira para real, adicionamos o sufixo `/`.
 ​
-USD/EUR -> BRL
-> `https://api.frentecorretora.com.br/v1/exchanges/remittance/`
+```
+// Para outbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound/
+
+// Para inbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound/
+```
+
+Essa distinção entre rotas (`/reverse` e `/`) acontece pois as taxas de spread podem variar, dependendo do tipo de cálculo usado.
 ​
-Essa distinção entre rotas acontece pois as taxas de spread podem variar, dependendo do tipo de cálculo usado.
-​
+
 Há alguns parâmetros obrigatórios a serem passados no endpoint, para que as informações desejadas sejam retornadas na requisição:
 ​
 - **purposeCode**	(_String_): Indica a natureza da operação de remessa. São 2 valores possíveis:
@@ -61,66 +88,98 @@ Há alguns parâmetros obrigatórios a serem passados no endpoint, para que as i
   - R$ 4.000 deve ser enviado como 40000000
   - R$ 1.500 deve ser enviado como 15000000
   - R$ 560 deve ser enviado como 5600000
-​
-Um exemplo de endpoint completo seria:
+
 ​
 Para conversões de BRL (real) para moeda estrangeira:
-​
-`https://api.frentecorretora.com.br/v1/exchanges/remittance/reverse?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000`
-​
+
+```
+// Para outbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound/reverse?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000
+
+// Para inbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound/reverse?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000
+```
+
 Para conversões de moeda estrangeira para BRL (real):
-​
-`https://api.frentecorretora.com.br/v1/exchanges/remittance?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000`
+
+```
+// Para outbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000
+
+// Para inbound
+https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000
+```
+
 ​
 Um exemplo de payload de resposta seria:
 ​
 ```js
 {
-  id: "98e69bc5e28f0a29f24e33970e511daca6e75031",
-  createdAt: "2020-01-24T18:38:52.647Z",
-  expiresAt: "2020-01-24T18:48:52.000Z",
-  purposeCode: "IR001",
-  maxExpireTime: 600,
-  currency: {
-    currencyCode: "USD",
-    currencyName: "Dólar Americano",
-    countryFlagUrl: "https://s3.amazonaws.com/frente-exchanges/flags/united-states.svg",
-    totalSpreadValue: 2.5,
-    minValue: 50,
-  },
-  offer: {
-    value: 3439894,
-    divisor: 10000,
-  },
-  tax: {
-    iof: {
-      percentage: 1.1,
-      total: {
-        value: 163049,
-        divisor: 10000,
+  "id": "e37be94632986caf21bf8ce8924dd98402578e12",
+  "correspondentId": 3,
+  "purposeCode": "IR001",
+  "currency": {
+    "code": "USD",
+    "name": "Dólar Americano",
+    "commercialExchangeRate": {
+      "divisor": 10000,
+      "updatedAt": "2020-04-23T19:28:19.000Z",
+      "value": 55030
+    },
+    "countryFlagUrl": "https://s3.amazonaws.com/frente-exchanges/flags/united-states.svg",
+    "levelingRate": {
+      "divisor": 10000,
+      "value": 55030
+    },
+    "maxValue": 3000,
+    "minValue": 100,
+    "offer": {
+      "divisor": 100,
+      "value": 1000000
+    },
+    "price": {
+      "withoutTax": {
+        "divisor": 10000,
+        "value": 56131
       },
+      "withTax": {
+        "divisor": 10000,
+        "value": 56748
+      }
     },
+    "spreadPercentage": 2
   },
-  price: {
-    withTax: {
-      value: 43606,
-      divisor: 10000,
+  "tax": {
+    "bankFee": {
+      "valueUSD": "20",
+      "total": {
+        "divisor": 100,
+        "value": 0
+      }
     },
-    withoutTax: {
-      value: 43132,
-      divisor: 10000,
-    },
+    "iof": {
+      "percentage": 1.1,
+      "total": {
+        "divisor": 100,
+        "value": 61700
+      }
+    }
   },
-  total: {
-    withTax: {
-      value: 15000000,
-      divisor: 10000,
+  "total": {
+    "withoutTax": {
+      "divisor": 100,
+      "value": 5613100
     },
-    withoutTax: {
-      value: 14836951,
-      divisor: 10000,
-    },
+    "withTax": {
+      "divisor": 100,
+      "value": 5674800
+    }
   },
+  "type": "OUTBOUND",
+  "clamp": "MINIMUM",
+  "timeToLive": 600,
+  "expiresAt": "2020-04-21T22:41:05.000Z",
+  "createdAt": "2020-04-21T22:31:05.186Z"
 }
 ```
 
@@ -149,41 +208,68 @@ const formattedTotal = `R$ (total.withTax.value / total.withTax.divisor)`
 
 ### Explicando o payload de EXCHANGES
 
-- id: ID da remessa
+- **id**: ID da remessa
 
-- createdAt: data de criação da remessa
+- **correspondentId**: ID do correspondente que foi passado como parâmetro
 
-- expiresAt: data de expiração da remessa
+- **purposeCode**: natureza da operação
+  - **IR001**: remessa para o próprio cliente
+  - **IR002**: remessa para um beneficiário terceiro
 
-- purposeCode: natureza da operação
-  - IR001: remessa para o próprio cliente
-  - IR002: remessa para um beneficiário terceiro
+- **currency**: `Object` contendo informações sobre a moeda
+  - **code**: sigla da moeda escolhida pelo usuário
+  - **name**: nome da moeda
+  - **commercialExchangeRate** `Object` cotação comercial para a moeda atual
+    - **divisor**: divisor usado para formatar o `value`
+    - **updatedAt**: data de atualização da cotação comercial atual em UTC
+    - **value**: valor total da cotação comercial
+  - **countryFlagUrl**: url para buscar a bandeira da moeda escolhida, no formato svg
+  - **levelingRate**: `Object` taxa de nivelamento da cotação (que pode ser igual ao `commercialExchangeRate`)
+    - **divisor**: divisor usado para formatar o `value`
+    - **value**: valor da taxa de nivelamento
+  - **maxValue**: valor máximo a ser transacionado.
+  - **minValue**: valor mínimo a ser transacionado.
+  - **offer**: `Òbject` moeda nacional oferecido na cotação
+    - **divisor**: divisor usado para formatar o `value`
+    - **value**: valor final em moeda nacional
+  - **price**: `Object` preço de venda da cotação
+    - **withoutTax**: `Object` preço de venda da moeda pedida na cotação em BRL sem impostos
+      - **divisor**: divisor usado para formatar o `value`
+      - **value**: valor final do preço
+    - **withTax**: `Object` preço de venda da moeda pedida na cotação em BRL com impostos
+      - **divisor**: divisor usado para formatar o `value`
+      - **value**: valor final do preço
+  - **spreadPercentage**: valor em % do spread total incluso no valor da moeda. Spread total contempla spread base + spread do correspondent (caso exista)
 
-- maxExpireTime: tempo máximo de expiração da remessa
+- **tax**: `Object` contendo informações sobre os impostos inclusos na moeda
+  - **bankFee**: `Object` tarifa bancária da cotação
+    - **valueUSD**: valor total da tarifa em USD
+    - **total**: `Object` valor total da tarifa bancária
+      - **divisor**: divisor usado para formatar o `value`
+      - **value**: valor total
+  - **iof**: `Object` IOF sobre o valor total da cotação
+    - **percentage**: valor total do IOF sobre o valor final da transação
+    - **total**: `Object` valor total do IOF sobre o valor final da transação
+      - **divisor**: divisor usado para formatar o `value`
+      - **value**: valor total do IOF sobre
 
-- currency: `Object` contendo informações sobre a moeda
-  - currencyCode: sigla da moeda escolhida pelo usuário
-  - currencyName: nome da moeda
-  - countryFlagUrl: url para buscar a bandeira da moeda escolhida, no formato svg
-  - totalSpreadValue: valor em % do spread total incluso no valor da moeda. Spread total contempla spread base + spread do correspondente
-  - minValue: valor mínimo a ser transacionado.
+- **total**: `Object` contendo o valor total da transação em moeda nacional
+  - **withoutTax**: `Object` valor total da transação em moeda nacional, acrescido de spread, **sem** os impostos (IOF)
+    - **divisor**: divisor usado para formatar o `value`
+    - **value**: valor total
+  - **withtax**: `Object` valor total da transação em moeda nacional, acrescido de spread e impostos
+    - **divisor**: divisor usado para formatar o `value`
+    - **value**: valor total
 
-- offer: `Object` contendo o valor total em moeda estrangeira que o usuário deseja transacionar.
-  - value: valor total em moeda estrangeira, não formatado
-  - divisor: divisor usado para formatar o `value`
+- **type**: tipo da remessa `INBOUND` ou `OUTBOUND`
 
-- tax: `Object` contendo informações sobre os impostos inclusos na moeda
-  - iof.percentage: % do IOF sobre o valor total da transação
-  - iof.total.value: valor total do IOF sobre o valor final da transação
-  - iof.total.divisor: divisor usado para formatar o `value`
+- **clamp**: método de arredondamento do valor pedido na cotação, `NORMAL`, `MINIMUM` e `MAXIMUM`
 
-- price: `Object` contendo informações sobre o valor da moeda no momento da simulação
-  - withTax: é o VET, ou seja, valor base da cotação da moeda, acrescido de spread e impostos
-  - withoutTax: valor base da cotação acrescido do spread, **sem** os impostos (IOF)
+- **timeToLive**: tempo máximo de expiração da cotação
 
-- total: `Object` contendo o valor total da transação em moeda nacional
-  - withtax: valor total da transação em moeda nacional, acrescido de spread e impostos
-  - withoutTax: valor total da transação em moeda nacional, acrescido de spread, **sem** os impostos (IOF)
+- **expiresAt**: data de expiração da cotação
+
+- **createdAt**: data de criação da cotação
 
 ​
 ### Quando chamar esse endpoint de *EXCHANGES*?
@@ -199,6 +285,7 @@ Quando o usuário decidir efetuar a transação, a seguinte URL deve ser chamada
 `correspondent_identifier` (_String_) é o nome do seu correspondente.
 ​
 > Exemplo: *frente*
+
 ​
 Também devem ser enviados os seguintes parâmetros na URL:
 ​
@@ -214,10 +301,18 @@ Também devem ser enviados os seguintes parâmetros na URL:
 ​
 - **remittanceAmount** (_Integer_): Valor em moeda estrangeira a ser enviada
   - Exemplo: `344.15`
+
+- **remittanceType** (String): Tipo da remessa a ser envianda
+  - Exemplo: `inbound` ou `outbound`
 ​
-​
+
 Um exemplo de URL completa seria:
-​
-`https://iamsimple.com.br/frente/app/checkout/remittance?purposeCode=IR001&remittanceAmountBRL=1500&currencyCode=USD&remittanceAmount=344.15`
+
+```
+// Para outbound
+https://iamsimple.com.br/frente/app/checkout/remittance?purposeCode=IR001&remittanceAmountBRL=1500&currencyCode=USD&remittanceAmount=344.15&remittanceType=outbound
+// Para inbound
+https://iamsimple.com.br/frente/app/checkout/remittance?purposeCode=IR001&remittanceAmountBRL=1500&currencyCode=USD&remittanceAmount=344.15&remittanceType=inbound
+```
 ​
 Dessa forma o usuário irá entrar na SIMPLE do correspondente, com os valores já definidos no simulador.

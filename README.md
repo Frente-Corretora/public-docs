@@ -1,6 +1,6 @@
 # Documentação pública
 
-Aqui estão listados alguns documentos de acesso público que tem como objetivo ajudar na integração com o sistemas do Frente Corretora e da plataforma Simple.
+Aqui estão listados alguns documentos de acesso público que tem como objetivo ajudar na integração com os sistemas da Frente Corretora e da plataforma Simple.
 
 ## Integração de simulador com o Simple
 
@@ -8,7 +8,7 @@ Uma explicação de como funciona a integração entre um simulador externo, com
 
 [Papel moeda](https://github.com/Frente-Corretora/public-docs/blob/master/external-price-simulator.md)
 
-[Remssas](https://github.com/Frente-Corretora/public-docs/blob/master/external-remittance-simulator.md)
+[Remessas](https://github.com/Frente-Corretora/public-docs/blob/master/external-remittance-simulator.md)
 
 ## Changelog API pública
 
