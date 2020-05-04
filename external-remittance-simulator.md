@@ -304,7 +304,9 @@ Também devem ser enviados os seguintes parâmetros na URL:
 
 - **remittanceType** (String): Tipo da remessa a ser envianda
   - Exemplo: `inbound` ou `outbound`
-​
+
+​**IMPORTANTE**
+> Os valores dos campos `purposeCode` e `currencyCode` devem ser informados em **maiúsculo**. O campo `remittanceType` permite valor em **minúsculo** ou **maiúsculo**.
 
 Um exemplo de URL completa seria:
 
