@@ -6,7 +6,7 @@ Este documento tem o objetivo de manter um histórico de todas as alterações f
 
 ## 2020-06-17 - Remoção de indicadores no profile
 
-Removido do schema de PhysicalPerson e das mutations `registerAPIClient` e `updateAPIClient` os atributos referentes aos indicadores, `partnerName` e `partnerEmail`.
+Removido do schema de PhysicalPerson e das mutations `registerAPIClient` e `updateAPIClient`, os atributos referentes aos indicadores, `partnerName` e `partnerEmail`.
 
 ## 2020-05-07 - Gerenciamento de endereços
 
