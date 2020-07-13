@@ -4,6 +4,10 @@ Este documento tem o objetivo de manter um histórico de todas as alterações f
 
 ## [Unreleased]
 
+## 2020-06-17 - Remoção de indicadores no profile
+
+Removido do schema de PhysicalPerson os atributos referentes aos indicadores, `partnerId` e `partnerEmail`.
+
 ## 2020-05-07 - Gerenciamento de endereços
 
 O controle de endereços foi alterado para ter mutations isoladas para cada ação possível em um endereço, dessa forma temos um gerenciamento mais simples dos endereços de um cliente.
