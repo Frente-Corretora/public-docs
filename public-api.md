@@ -40,4 +40,4 @@ Enviar o **ID** das operações para validações.
 
 ### 4. Termos de uso
 
-Uma evidência de onde os termos de uso estão sendo apresentados para o usuário e que ele precisa confirmar a existência deles antes de interagir antes de conseguir criar uma operação.
+Uma evidência de onde os termos de uso estão sendo apresentados para o usuário e que ele precisa confirmar a existência deles antes de interagir com a API, portanto esse aceite deve ocorrer antes de conseguir criar uma operação.
