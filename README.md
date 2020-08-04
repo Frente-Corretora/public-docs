@@ -16,3 +16,8 @@ Um histórico de todas as alterações feitas na API pública do Simple, como no
 
 [Acesse](https://github.com/Frente-Corretora/public-docs/blob/master/changelog-public-api.md)
 
+## FAQ API pública
+
+Perguntas e respostas sobre a API pública do Simple.
+
+[Acesse](https://github.com/Frente-Corretora/public-docs/blob/master/faq-public-api.md)
