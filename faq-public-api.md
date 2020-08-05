@@ -12,9 +12,14 @@ Envie um email para dev@frentecorretora.com.br com o assunto **ACESSO API DE PRO
 
 ### 1. Cadastrar cliente
 
-Deve ser cadastrado um cliente, juntamente com endereços, contas, beneficiários e um documento válido.
+Deve ser cadastrado um cliente, juntamente com:
 
-O *wlStatus* desse cliente deve estar como *accepted* (aprovado) no painel de adminstração do Simple para passar nas validações.
+- 1 endereço
+- 1 conta
+- 1 beneficiário
+- 1 documento válido.
+
+O status desse cliente deve estar como *accepted* (aprovado) no painel de adminstração do Simple para passar nas validações.
 
 Enviar o **CPF** do cliente para validações.
 
@@ -22,7 +27,9 @@ Enviar o **CPF** do cliente para validações.
 
 > Somente se a aplicação interagir com essa API
 
-Criar uma operação de papel moeda, com loja, moeda e valor a sua escolha.
+Criar uma operação de papel moeda, com loja e valor a sua escolha.
+
+A moeda da operação deve ser não exótica (USD ou EUR).
 
 O status da operação deve ser *waiting_payment* (aguardando pagamento) no painel de adminstração do Simple para passar nas validações.
 
