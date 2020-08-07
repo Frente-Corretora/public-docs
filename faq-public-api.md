@@ -29,7 +29,7 @@ Enviar o **CPF** do cliente para validações.
 
 Criar uma operação de papel moeda, com loja e valor a sua escolha.
 
-A moeda da operação deve ser não exótica (USD ou EUR).
+A moeda da operação deve USD ou EUR.
 
 O status da operação deve ser *waiting_payment* (aguardando pagamento) no painel de adminstração do Simple para passar nas validações.
 
