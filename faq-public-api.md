@@ -25,7 +25,7 @@ Deve ser cadastrado um cliente, juntamente com:
 - 1 beneficiário
 - 1 documento válido.
 
-O status desse cliente deve estar como *accepted* (aprovado) no painel de adminstração do Simple para passar nas validações.
+O status desse cliente deve estar como *accepted* (aprovado) no painel de administração do Simple para passar nas validações.
 
 Enviar o **CPF** do cliente para validações.
 
@@ -37,7 +37,7 @@ Criar uma operação de papel moeda, com loja e valor a sua escolha.
 
 A moeda da operação deve USD ou EUR.
 
-O status da operação deve ser *waiting_payment* (aguardando pagamento) no painel de adminstração do Simple para passar nas validações.
+O status da operação deve ser *waiting_payment* (aguardando pagamento) no painel de administração do Simple para passar nas validações.
 
 Enviar o **ID** da operação para validações.
 
@@ -47,10 +47,22 @@ Enviar o **ID** da operação para validações.
 
 Criar duas operações de remessa, uma para disponibilidade no exterior e outra para manutenção de residente com moeda, valor e país de destino a sua escolha.
 
-O status da remessa deve ser *processing* (processando) no painel de adminstração do Simple para passar nas validações.
+O status da remessa deve ser *processing* (processando) no painel de administração do Simple para passar nas validações.
 
 Enviar o **ID** das operações para validações.
 
 ### 4. Termos de uso
 
 Uma evidência de onde os termos de uso estão sendo apresentados para o usuário e que ele precisa confirmar a existência deles antes de interagir com a API, portanto esse aceite deve ocorrer antes de conseguir criar uma operação.
+
+## Alterações necessárias no ambiente de produção
+
+As *properties* abaixo precisam ser atualizadas para o correto funcionamento da aplicação no ambiente de produção:
+
+- `url`: A base URL de acesso a API deve ser alterada para `https://api.frentecorretora.com.br`
+
+- `correspondent_id`: o identificador único do correspondente é diferente entre ambientes, o novo `id` sera enviado por email.
+
+- `merchants_ids`: o id dos merchants pode mudar entre ambiente, mas essa property **não** deve ser estática na sua aplicação, sempre use a [rota](https://docs.api.frentecorretora.com.br/?version=latest#e77c8823-a960-406e-9d9f-8ba9f6eb5770) para obter os merchants disponíveis.
+
+- `login e senha`: o login e senha são diferentes entre os ambientes, as novas informações de login serão enviadas por email.
