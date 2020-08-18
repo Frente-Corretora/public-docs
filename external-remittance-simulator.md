@@ -1,68 +1,71 @@
 # Tipos de remessas no Simple
 
 ## Realizando 'Envio de Remessa' pelo Simple
-​
+
 O envio de Remessa trata-se do envio de moeda nacional para estrangeira em conta no exterior.
 Atualmente, o Simple realiza o envio de remessa com duas naturezas de operação: para a conta do próprio cliente no exterior ou para um beneficiário.
-​
+
 ## Realizando 'Recebimento de Remessa' pelo Simple
 
 O recebimento de remessas trata-se do recebimento de moeda nacional, vinda de moeda estrangeira em conta no exterior.
-​
-# Integrando um simulador externo com a funcionalidade de "Envio de remessas" do SIMPLE
-​
+
+## Integrando um simulador externo com a funcionalidade de "Envio de remessas" do SIMPLE
+
 Primeiro, é necessário ter em mãos o seu **correspondent_identifier** e **correspondent_id**. Essas informações são cruciais para realizar requisições na API da SIMPLE.
-​
+
 - **correspondent_identifier** (_String_) é um nome, um identificador único para cada correspondente associado ao SIMPLE.
-​
+
 > Exemplo: matriz
-​
+
 - **correspondent_id** (_Integer_) é o ID associado ao correspondente
-​
+
 > Exemplo: 1
-​
+
 ## Acessando informações sobre moedas, taxas, cotações e valores
-​
+
 **Não é necessário fazer nenhum cálculo no frontend**, já que o endpoint de _EXCHANGES_ é o responsável por trazer todas as informações relacionadas à moedas, taxas, cotações, valores em real e valores em moeda estrangeira. O conjunto dessas informações retornadas pela API pode ser chamado de **cotação de uma remessa**.
 ​
 
 Como mencionado as remessas se difereciam entre **envio** e **recebimento**, no contexto de rota da API serão lidadas respectivamente como `/outbound` e `/inbound`.
 
-O prefixo base para simular qualquer cotação de uma remessa é o seguinte: 
-```
+O prefixo base para simular qualquer cotação de uma remessa é o seguinte:
+
+```text
 https://api.frentecorretora.com.br/v1/exchanges/remittance
 ```
 
 Logo após o prefixo é informado o tipo da remessa(outbound ou inbound):
-```
+
+```text
 https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound
 ou
 https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound
 ```
 
 Após informar o tipo da remessa, será necessário informar a forma com a qual será calculada a cotação. A API da SIMPLE suporta 2 tipos de cálculos para remessas:
-​
+
 - de real (BRL) para moeda estrangeira
 - de moeda estrangeira para real (BRL)
 
-**IMPORTANTE**
+Informação **IMPORTANTE**
+
 - **Outbound**, suporta Euro (EUR) e Dólar Americano (USD) como moeda estrangeira.
 - **Inbound**, suporta Euro (EUR), Dólar Americano (USD) e Libra Esterlina (GBP) como moeda estrangeira.
 ​
 
 Quando o cálculo é feito de real para moeda estrangeira, adicionamos o sufixo `/reverse`.
-​
-```
+
+```text
 // Para outbound
 https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound/reverse
 
 // Para inbound
 https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound/reverse
 ```
-​
+
 Quando o cálculo é feito de moeda estrangeira para real, adicionamos o sufixo `/`.
-​
-```
+
+```text
 // Para outbound
 https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound/
 
@@ -72,27 +75,25 @@ https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound/
 
 Essa distinção entre rotas (`/reverse` e `/`) acontece pois as taxas de spread podem variar, dependendo do tipo de cálculo usado.
 ​
-
 Há alguns parâmetros obrigatórios a serem passados no endpoint, para que as informações desejadas sejam retornadas na requisição:
-​
-- **purposeCode**	(_String_): Indica a natureza da operação de remessa. São 2 valores possíveis:
+
+- **purposeCode** (_String_): Indica a natureza da operação de remessa. São 2 valores possíveis:
   - IR001: remessa será realizada para a própria pessoa
   - IR002: remessa será enviada para outro beneficiário
 ​
 - **currency** (_String_): Código da moeda que o usuário deseja comprar
   - Alguns exemplos são USD, EUR, GBP.
 ​
-- **correspondentId**	(_Integer_): ID do correspondente em questão
+- **correspondentId** (_Integer_): ID do correspondente em questão
 ​
-- **value**	(_Integer_): valor em reais (BRL) que o usuário deseja comprar. Esse valor deve ser multiplicado por 10⁴ antes de ser enviado.
+- **value** (_Integer_): valor em reais (BRL) que o usuário deseja comprar. Esse valor deve ser multiplicado por 10⁴ antes de ser enviado.
   - R$ 4.000 deve ser enviado como 40000000
   - R$ 1.500 deve ser enviado como 15000000
   - R$ 560 deve ser enviado como 5600000
 
-​
 Para conversões de BRL (real) para moeda estrangeira:
 
-```
+```text
 // Para outbound
 https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound/reverse?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000
 
@@ -102,7 +103,7 @@ https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound/reverse?purpo
 
 Para conversões de moeda estrangeira para BRL (real):
 
-```
+```text
 // Para outbound
 https://api.frentecorretora.com.br/v1/exchanges/remittance/outbound?purposeCode=IR001&currency=USD&correspondentId=1&value=15000000
 
@@ -112,8 +113,8 @@ https://api.frentecorretora.com.br/v1/exchanges/remittance/inbound?purposeCode=I
 
 ​
 Um exemplo de payload de resposta seria:
-​
-```js
+
+```json
 {
   "id": "e37be94632986caf21bf8ce8924dd98402578e12",
   "correspondentId": 3,
@@ -183,13 +184,13 @@ Um exemplo de payload de resposta seria:
 }
 ```
 
-#### Sobre a relação entre value e divisor
+### Sobre a relação entre value e divisor
 
 Note que no payload de exemplo acima, alguns campos possuem uma propriedade `value` e `divisor`. O `divisor` é responsável por formatar o valor de `value` para a exibição no front-end da aplicação.
 
 Então por exemplo, se quisermos exibir o valor total de uma transação:
 
-```js
+```json
 total: {
   withTax: {
     value: 14836951,
@@ -200,7 +201,7 @@ total: {
 
 Faríamos o seguinte cálculo:
 
-```
+```js
 const formattedTotal = `R$ (total.withTax.value / total.withTax.divisor)`
 
 // R$ 1483.6951
@@ -271,13 +272,12 @@ const formattedTotal = `R$ (total.withTax.value / total.withTax.divisor)`
 
 - **createdAt**: data de criação da cotação
 
-​
-### Quando chamar esse endpoint de *EXCHANGES*?
-​
+### Quando chamar esse endpoint de *EXCHANGES*
+
 No simulador customizado do correspondente, o usuário provavelmente poderá escolher o valor a ser enviado na remessa através de um `<input>`. Você pode optar por chamar o endpoint de EXCHANGES toda vez que o usuário digitar algum valor no input, assim você terá dados atualizados a todo momento. Porém, para não sobrecarregar a API e manter a boa usabilidade de usuário no frontend, recomendamos usar uma função `debounce` para limitar o número de requisições. É possível esperar o usuário digitar todo o valor que ele deseja enviar na remessa, para então fazer apenas 1 requisição à API. Dessa forma, usamos o endpoint de maneira mais inteligente.
-​
+
 ## Integração
-​
+
 Quando o usuário decidir efetuar a transação, a seguinte URL deve ser chamada:
 ​
 `https://iamsimple.com.br/${correspondent_identifier}/app/checkout/remittance`
@@ -288,8 +288,8 @@ Quando o usuário decidir efetuar a transação, a seguinte URL deve ser chamada
 
 ​
 Também devem ser enviados os seguintes parâmetros na URL:
-​
-- **purposeCode**	(_String_): Indica a natureza da operação de remessa. São 2 valores possíveis:
+
+- **purposeCode** (_String_): Indica a natureza da operação de remessa. São 2 valores possíveis:
   - IR001: remessa será realizada para a própria pessoa
   - IR002: remessa será enviada para outro beneficiário
 ​
@@ -310,11 +310,12 @@ Também devem ser enviados os seguintes parâmetros na URL:
 
 Um exemplo de URL completa seria:
 
-```
+```text
 // Para outbound
 https://iamsimple.com.br/frente/app/checkout/remittance?purposeCode=IR001&remittanceAmountBRL=1500&currencyCode=USD&remittanceAmount=344.15&remittanceType=outbound
+
 // Para inbound
 https://iamsimple.com.br/frente/app/checkout/remittance?purposeCode=IR001&remittanceAmountBRL=1500&currencyCode=USD&remittanceAmount=344.15&remittanceType=inbound
 ```
-​
+
 Dessa forma o usuário irá entrar na SIMPLE do correspondente, com os valores já definidos no simulador.
