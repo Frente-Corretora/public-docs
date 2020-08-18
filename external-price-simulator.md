@@ -1,18 +1,18 @@
 # Introdução - V2
 
-
 > Se você está procurando a documentação antiga da integração do simulador [clique aqui](https://github.com/Frente-Corretora/public-docs/blob/d0c941d1923bd23723f0df932756cacb106a241b/external-price-simulator.md). Essa documentação foi atualizada.
 
 SIMPLE é uma plataforma _white label_ que proporciona soluções completas de câmbio para os correspondentes. As principais funcionalidades da SIMPLE são:
-​
+
 - Compra de papel moeda com delivery
+
 - Remessas internacionais usando blockchain
 
 ## Sobre essa documentação
-​
+
 O objetivo desta documentação é tornar a integração entre os correspondentes e a plataforma SIMPLE o mais acessível e transparente possível, sanando quaisquer dúvidas que a equipe técnica venha a ter à nível de código.
 
-# Acessando as documentações
+## Acessando as documentações
 
 Para acessar a documentação de integração de um simulador externo com a funcionalidade de **Envio de remessas** do SIMPLE, clique [aqui](https://github.com/Frente-Corretora/public-docs/blob/master/external-remittance-simulator.md) ou acesse esse link:
 
@@ -20,29 +20,27 @@ https://github.com/Frente-Corretora/public-docs/blob/master/external-remittance-
 
 A seguir você tem acesso à documentação para integrar um simulador externo com o Simple, na funcionalidade de **Compra de papel moeda**.
 
-# Ferramenta de documentação
+## Ferramenta de documentação
 
 Usamos por padrão para documentar nossa API um serviço chamado de [Postman](https://www.postman.com/). Entre as várias funcionalidades e a interface amigável, objetivamos sempre ajudar sua equipe de desenvolvimento, que pode simplesmente mandar executar toda a nossa coleção da API na máquina deles. 
 
-# Documentação de como integrar um Simple com dados vindos de um simulador externo
+## Documentação de como integrar um Simple com dados vindos de um simulador externo
 
 Temos três entidades em questão:
 
- - CORRESPONDENT
- - MERCHANTS
- - EXCHANGES
+- CORRESPONDENT
+- MERCHANTS
+- EXCHANGES
 
- **CORRESPONDENT** é resposável por retornar os dados do correspondente em questão recebendo um identificador unico na request. Ex: *matriz*
+ **CORRESPONDENT** é responsável por retornar os dados do correspondente em questão recebendo um identificador único na request. Ex: *matriz*
 
- **MERCHANTS** pertence a um CORRESPONDENT e pode ser visualizado como a cidade de venda moeda, ele contem todos os dados sobre a cidade escolhida pelo cliente e tambèm possui um identicador unico. Ex: *WL-FRENTE-SP*
+ **MERCHANTS** pertence a um CORRESPONDENT e pode ser visualizado como a cidade de venda moeda, ele contem todos os dados sobre a cidade escolhida pelo cliente e também possui um identificador único. Ex: *WL-FRENTE-SP*
 
- **EXCHANGES** é resposável por retornar as taxas das moedas dispíveis da cidade escolhida pelo cliente, baseado na no código AGENT
+ **EXCHANGES** é responsável por retornar as taxas das moedas disponíveis da cidade escolhida pelo cliente, baseado na no código AGENT
 
- ____
+## Como obter as  Cidades (Merchants)
 
-## Como obter os MERCHANTS
-
-O endpoint utilizado, passando o `correspondent_id` do corresondente em questão.
+O endpoint utilizado, passando o `correspondent_id` do correspondente em questão.
 
 `https://api.frentecorretora.com.br/v1/correspondents/{correspondent_id}/merchants`
 
@@ -52,9 +50,7 @@ Nesse caso, vamos utilizar somente `id` e `label`
 
 Com esses dados conseguimos exibir um select para o cliente selecionar a cidade e a partir disso obtemos as taxas dessa cidade
 
-___
-
-## Como obter os EXCHANGES
+## Como obter as Moedas (Products)
 
 O endpoint utilizado, passando o `id` do merchant em questão.
 
@@ -65,7 +61,6 @@ Toda a documentação tanto de como buscar quanto como qual a resposta está des
 Nesse caso, vamos utilizar somente `countryFlagUrl`, `currencyName`, `currencyCode`
 
 Com esses dados conseguimos exibir um select para o cliente selecionar a moeda e a partir disso calculamos a conversão.
-____
 
 ## A Cotação
 
@@ -81,7 +76,7 @@ Com as respostas `price`[`withoutTax`] e `price`[`withTax`] você consegue extra
 
 Com as respostas `total`[`withTax`] você consegue extrair o que devolver para o seu usuário.
 
->  Lembre-se: Sua cotacão irá expirar em 10 minutos! O mercado de câmbio oscila! Os valores podem ser ligeiramente alterados.
+> Lembre-se: Sua cotacão irá expirar em 10 minutos! O mercado de câmbio oscila! Os valores podem ser ligeiramente alterados.
 
 ## Integração
 
@@ -89,14 +84,14 @@ Quando o seu usuário clicar em comprar no seu simulador você deve montar a URL
 
 `correspondent_identifier` = Identifier do seu Simple, exemplo: *matriz*
 
-`agentId` = id da merchant escolhida pelo usuario
+`agentId` = id da merchant escolhida pelo usuário
 
-`productId` = id da moeda escolhida pelo usuario
+`productId` = id da moeda escolhida pelo usuário
 
-`productAmount` = quantidade da moeda escolhida pelo usuario
+`productAmount` = quantidade da moeda escolhida pelo usuário
 
-`utm_source` = usado para tracking no google analitics
+`utm_source` = usado para tracking no google analytics
 
-A url ira ficar dessa forma, usando o exemplos acima
+A url ira ficar dessa forma, usando o exemplos acima:
 
 `https://iamsimple.com.br/{correspondent_identifier}/app/checkout/paper-money?agentId=WL-FRENTE-SP&productId=USD&productAmount=1000&utm_source=matriz-simulator`
