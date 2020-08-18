@@ -1,5 +1,11 @@
 # FAQ API Pública
 
+## Status ambiente de produção
+
+Temos um site onde possível acompanhar o status dos principais serviços do Simple em tempo real, um histórico de uptime dos últimos 30 dias e também o histórico de incidentes da API.
+
+[Acesse aqui](https://status.frentecorretora.com.br/)
+
 ## Credenciais do ambiente de produção
 
 Antes da criação de credenciais para o ambiente de produção, é necessário cumprir um checklist na aplicação criada.
