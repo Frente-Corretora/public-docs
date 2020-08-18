@@ -66,3 +66,5 @@ As *properties* abaixo precisam ser atualizadas para o correto funcionamento da 
 - `merchants_ids`: o id dos merchants pode mudar entre ambiente, mas essa property **não** deve ser estática na sua aplicação, sempre use a [rota](https://docs.api.frentecorretora.com.br/?version=latest#e77c8823-a960-406e-9d9f-8ba9f6eb5770) para obter os merchants disponíveis.
 
 - `login e senha`: o login e senha são diferentes entre os ambientes, as novas informações de login serão enviadas por email.
+
+- `webhooks`: será necessário recriar os webhooks, no ambiente de produção, para o correto acompanhamento das atualizações de cada entidade, [como fazer isso](https://docs.api.frentecorretora.com.br/?version=latest#1dd004f6-4ca6-4c37-8a17-0c3e8a47c295).
