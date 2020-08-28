@@ -4,6 +4,10 @@ Este documento tem o objetivo de manter um histórico de todas as alterações f
 
 ## [Unreleased]
 
+## 2020-08-31 - Simulador Externo de Remessas: compra de Inbound via Google Adsense
+
+A integraçao externa do simulador de remessas, passa a permitir a natureza `ADSENSE` quando a remessa é do tipo `inbound` e a compra é feita em `dólar`.
+
 ## 2020-06-17 - Remoção de indicadores no profile
 
 Removido do schema de PhysicalPerson e das mutations `registerAPIClient` e `updateAPIClient`, os atributos referentes aos indicadores, `partnerName` e `partnerEmail`.
