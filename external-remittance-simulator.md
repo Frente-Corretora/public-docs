@@ -49,8 +49,16 @@ Após informar o tipo da remessa, será necessário informar a forma com a qual 
 
 Informação **IMPORTANTE**
 
-- **Outbound**, suporta Euro (EUR) e Dólar Americano (USD) como moeda estrangeira.
-- **Inbound**, suporta Euro (EUR), Dólar Americano (USD) e Libra Esterlina (GBP) como moeda estrangeira.
+- **Outbound**, suporta como moeda estrangeira:
+  - Euro (EUR);
+  - Dólar Americano (USD);
+  - Libra Esterlina (GBP);
+  - Dólar Canadense (CAD);
+  - Dólar Australiano (AUD).
+- **Inbound**, suporta como moeda estrangeira:
+  - Euro (EUR);
+  - Dólar Americano (USD);
+  - Libra Esterlina (GBP).
 ​
 
 Quando o cálculo é feito de real para moeda estrangeira, adicionamos o sufixo `/reverse`.
@@ -82,7 +90,7 @@ Há alguns parâmetros obrigatórios a serem passados no endpoint, para que as i
   - IR002: remessa será enviada para outro beneficiário
 ​
 - **currency** (_String_): Código da moeda que o usuário deseja comprar
-  - Alguns exemplos são USD, EUR, GBP.
+  - Alguns exemplos são USD, EUR, GBP, CAD, AUD.
 ​
 - **correspondentId** (_Integer_): ID do correspondente em questão
 ​
