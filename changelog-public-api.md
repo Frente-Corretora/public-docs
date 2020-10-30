@@ -4,6 +4,10 @@ Este documento tem o objetivo de manter um histórico de todas as alterações f
 
 ## [Unreleased]
 
+## 2020-11-16 - Nova natureza 'Serviços' para Outbound
+
+A criação de uma Remessa de Outbound poderá ser realizada para a natureza Serviços, para o uso adequado deste tipo de operação será necessário algumas alterações na forma de envio e filtragem da remessa, como por exemplo, a anexação da invoice ou contrato de prestação de serviço no fluxo de compra. Confira as mudanças de forma detalhada em [Simple API](https://docs.api.frentecorretora.com.br/?version=latest).
+
 ## 2020-10-16 - Novas moedas para Remessas de Outbound
 
 Remessas de Outbound ganha suporte a 3 novas moedas:
@@ -14,6 +18,10 @@ Remessas de Outbound ganha suporte a 3 novas moedas:
 A criação de beneficiário e conta ganha um novo campo `currency`, que aceita valores no padrão `ISO 4217 alpha-3 format`. Para usar as novas moedas é necessário a inclusão desse campo, pois a validação do código da conta será baseada na currency.
 
 Para quem estava integrando e optar por continuar usando apenas Euro (EUR) e Dólar Americano (USD), **nada muda**. A validação do código da conta continuará baseando-se no campo `bankCountry`, logo, não há breaking changes. Confira as mudanças de forma detalhada em [Simple API](https://docs.api.frentecorretora.com.br/?version=latest).
+
+## 2020-08-31 - Simulador Externo de Remessas: compra de Inbound via Google Adsense
+
+A integraçao externa do simulador de remessas, passa a permitir a natureza `ADSENSE` quando a remessa é do tipo `inbound` e a compra é feita em `dólar`.
 
 ## 2020-06-17 - Remoção de indicadores no profile
 
