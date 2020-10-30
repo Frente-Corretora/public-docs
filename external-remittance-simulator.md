@@ -300,6 +300,8 @@ Também devem ser enviados os seguintes parâmetros na URL:
 - **purposeCode** (_String_): Indica a natureza da operação de remessa. São 2 valores possíveis:
   - IR001: remessa será realizada para a própria pessoa
   - IR002: remessa será enviada para outro beneficiário
+  - ADSENSE: remessa será realizada para a própria pessoa via Google Adsense
+  - SERVICES: remessa será realizada para um beneficiário (físico ou jurídico)
 ​
 - **currencyCode** (_String_): Código da moeda que o usuário deseja comprar
   - Alguns exemplos são USD, EUR, GBP.
@@ -315,6 +317,8 @@ Também devem ser enviados os seguintes parâmetros na URL:
 
 ​**IMPORTANTE**
 > Os valores dos campos `purposeCode` e `currencyCode` devem ser informados em **maiúsculo**. O campo `remittanceType` permite valor em **minúsculo** ou **maiúsculo**.
+> A `purposeCode` do tipo `ADSENSE` é válida apenas quando o `remittanceType` é igual a `inbound` e a `currencyCode` é igual a `USD`.
+> A `purposeCode` do tipo `SERVICES` é válida apenas quando o `remittanceType` é igual a `outbound`.
 
 Um exemplo de URL completa seria:
 
